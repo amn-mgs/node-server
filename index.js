@@ -16,7 +16,7 @@ app.get('/', (req, res) => {
 
   // const con = mysql.createConnection({ host: 'localhost', database: 'medical', user: 'ali', password: 'ali' });
   // con.connect();
-  res.status(200).send('hello world form server').json;
+  res.status(200).send('hello world form node js server').json;
   // con.query('select * from users', (err, rs) => {
   //   if (err) throw err;
   //   // rs.forEach(element => {
