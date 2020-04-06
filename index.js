@@ -2,7 +2,7 @@ const http = require('http');
 const express = require('express');
 const mysql = require('mysql');
 const socketio = require('socket.io');
-port = process.env.PORT || 3000;
+port = process.env.PORT || 21035;
 const app = express();
 
 let server = http.createServer(app);
