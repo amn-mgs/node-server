@@ -28,16 +28,15 @@ app.get('/', (req, res) => {
   const con = mysql.createConnection({ host: config.DbHost, database: config.Dbname, user: config.DbUserName, password: config.DbPassword });
   con.connect();
   // console.log(con);
- 
-  checkcontodb(con);
-  // con.query('select * from users', (err, rs) => {
-    // if (err) throw err;
-    // rs.forEach(element => {
-      // console.log(element.id, element.userName);
-    // });
-    // res.status(200).send(rs).json;
-    // console.log(rs);
-  // });
+  // checkcontodb(con);
+  con.query('select * from users;', (err, rs) => {
+    if (err) throw err;
+    rs.forEach(element => {
+      console.log(element.id, element.userName);
+    });
+    res.status(200).send(rs).json;
+    console.log(rs);
+  });
 
   con.end();
    // res.status(200).send('hello world form node js server').json;
