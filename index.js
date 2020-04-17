@@ -36,9 +36,10 @@ app.get('/', (req, res) => {
     });
     res.status(200).send(rs).json;
     console.log(rs);
+    con.end();
   });
 
-  con.end();
+  
    // res.status(200).send('hello world form node js server').json;
 });
 
