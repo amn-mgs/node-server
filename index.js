@@ -24,18 +24,30 @@ app.post('/user', (req, res, err) => {
 });
 
 app.get('/', (req, res) => {
-  // console.log('in app get /');
-  // const con = mysql.createConnection({ host: config.DbHost, database: config.Dbname, user: config.DbUserName, password: config.DbPassword });
-  // con.connect();
-  res.status(200).send('hello world form node js server').json;
+  console.log('in app get /');
+  const con = mysql.createConnection({ host: config.DbHost, database: config.Dbname, user: config.DbUserName, password: config.DbPassword });
+  con.connect();
+  // console.log(con);
+ 
+  checkcontodb(con);
   // con.query('select * from users', (err, rs) => {
-  //   if (err) throw err;
-  //   rs.forEach(element => {
-  //     // console.log(element.id, element.userName);
-  //   });
-  //   res.status(200).send(rs).json;
-  //   // console.log(rs);
-  //   con.end();
+    // if (err) throw err;
+    // rs.forEach(element => {
+      // console.log(element.id, element.userName);
+    // });
+    // res.status(200).send(rs).json;
+    // console.log(rs);
   // });
+
+  con.end();
+   // res.status(200).send('hello world form node js server').json;
 });
+
+function checkcontodb(c){
+c.query('select 1+1 as sol', (err,res,fields)=>{
+  if(err)throw error;
+  ;
+  console.log('the sol is = ',res[0].sol);
+});
+}
 
