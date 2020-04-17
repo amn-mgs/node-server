@@ -24,18 +24,18 @@ app.post('/user', (req, res, err) => {
 });
 
 app.get('/', (req, res) => {
-  console.log('in app get /');
-  const con = mysql.createConnection({ host: config.DbHost, database: config.Dbname, user: config.DbUserName, password: config.DbPassword });
-  con.connect();
-  // res.status(200).send('hello world form node js server').json;
-  con.query('select * from users', (err, rs) => {
-    if (err) throw err;
-    rs.forEach(element => {
-      // console.log(element.id, element.userName);
-    });
-    res.status(200).send(rs).json;
-    // console.log(rs);
-    con.end();
-  });
+  // console.log('in app get /');
+  // const con = mysql.createConnection({ host: config.DbHost, database: config.Dbname, user: config.DbUserName, password: config.DbPassword });
+  // con.connect();
+  res.status(200).send('hello world form node js server').json;
+  // con.query('select * from users', (err, rs) => {
+  //   if (err) throw err;
+  //   rs.forEach(element => {
+  //     // console.log(element.id, element.userName);
+  //   });
+  //   res.status(200).send(rs).json;
+  //   // console.log(rs);
+  //   con.end();
+  // });
 });
 
