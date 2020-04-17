@@ -44,7 +44,7 @@ app.get('/', async (req, res) => {
     const result = await con.query('select * from users;');
     console.log(result["rows"]);
     res.send(result["rows"]).json;
-    con.release();
+    // con.release();
   } catch (error) {
     console.error(error);
     res.status(400).send("Amn Error" + err);
