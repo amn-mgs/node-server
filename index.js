@@ -18,14 +18,15 @@ app.use(bodyParser.json());
 
 //configure the database Connection 
 var pool = new Pool({
-   connectionString: process.env.DATABASE_URL,
-  // connectionString: config.connectionString,
-  // user: config.DbUserName,
-  // password: config.DbPassword,
-  // host: config.DbHost,
-  // port: config.DbPort,
-  // database: config.Dbname,
-  ssl: config.ssl,
+  //  connectionString: config.connectionString,
+  //  connectionString: process.env.DATABASE_URL,
+  //  ssl: true,
+  user: config.DbUserName,
+  password: config.DbPassword,
+  host: config.DbHost,
+  port: config.DbPort,
+  database: config.Dbname,
+  ssl:false,
 });
 
 //start the server to be listening 
@@ -41,9 +42,9 @@ app.get('/', async (req, res) => {
   try {
     const con = await pool.connect();
     const result = await con.query('select * from users;');
-    console.log(result);
-    res.send(result).json;
-
+    console.log(result["rows"]);
+    res.send(result["rows"]).json;
+    con.release();
   } catch (error) {
     console.error(error);
     res.status(400).send("Amn Error" + err);
