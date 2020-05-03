@@ -7,7 +7,7 @@
 // let DbPassword='b05f1caa7e79bd13c0906fde89d5ea75c39c392cfea99ec92f8b56ee5885fe6c';
 // let ssl=true;
 
-// let connectionString='DATABASE_URL: postgres://ezyywaujxtlotu:b05f1caa7e79bd13c0906fde89d5ea75c39c392cfea99ec92f8b56ee5885fe6c@ec2-54-247-89-181.eu-west-1.compute.amazonaws.com:5432/d118jlpdg3tra9';
+let connectionString='DATABASE_URL: postgres://ezyywaujxtlotu:b05f1caa7e79bd13c0906fde89d5ea75c39c392cfea99ec92f8b56ee5885fe6c@ec2-54-247-89-181.eu-west-1.compute.amazonaws.com:5432/d118jlpdg3tra9';
 
 // // local postgres configuration
 let DbHost = 'localhost';
