@@ -19,31 +19,56 @@ app.use(bodyParser.json());
 //configure the database Connection 
 var pool = new Pool({
   //  connectionString: config.connectionString,
-   connectionString: process.env.DATABASE_URL,
-   ssl: true,
-  // user: config.DbUserName,
-  // password: config.DbPassword,
-  // host: config.DbHost,
-  // port: config.DbPort,
-  // database: config.Dbname,
-  // ssl:false,
+  // connectionString: process.env.DATABASE_URL,
+  // ssl: true,
+  user: config.DbUserName,
+  password: config.DbPassword,
+  host: config.DbHost,
+  port: config.DbPort,
+  database: config.Dbname,
+  ssl: false,
 });
 
 //start the server to be listening 
 server.listen(port, () => console.log(`server is started at port ${port}`));
 
 
-app.post('/user', (req, res, err) => {
-  console.log(req.body);
-  res.status(200).send(req.body);
+app.post('/userByLogId', async (req, res) => {
+  try {
+    // console.dir('the body '+req.body);
+    console.log(`select * from users where logid='${req.body['logid']}';`);
+    const con = await pool.connect();
+    const result = await con.query(`select * from users where logid='${req.body['logid']}';`);
+    console.log(result["rows"]);
+    res.status(200).send(result["rows"][0]).json;
+    con.release();
+  } catch (error) {
+    console.error(error);
+    res.status(400).send("Amn Error" + error);
+  }
+});
+
+app.post('/userById', async (req, res) => {
+  try {
+    // console.dir('the body '+req.body);
+    console.log(`select * from users where id='${req.body['id']}';`);
+    const con = await pool.connect();
+    const result = await con.query(`select * from users where id='${req.body['id']}';`);
+    console.log(result["rows"]);
+    res.status(200).send(result["rows"][0]).json;
+    con.release();
+  } catch (error) {
+    console.error(error);
+    res.status(400).send("Amn Error" + error);
+  }
 });
 
 app.get('/', async (req, res) => {
   try {
     const con = await pool.connect();
     const result = await con.query('select * from users;');
-    console.log(result["rows"]);
-    res.send(result["rows"]).json;
+    console.log(result.rows).json;
+    res.status(200).send(result.rows).json;
     con.release();
   } catch (error) {
     console.error(error);
