@@ -19,14 +19,14 @@ app.use(bodyParser.json());
 //configure the database Connection 
 var pool = new Pool({
   //  connectionString: config.connectionString,
-  // connectionString: process.env.DATABASE_URL,
-  // ssl: true,
-  user: config.DbUserName,
-  password: config.DbPassword,
-  host: config.DbHost,
-  port: config.DbPort,
-  database: config.Dbname,
-  ssl: false,
+  connectionString: process.env.DATABASE_URL,
+  ssl: true,
+  // user: config.DbUserName,
+  // password: config.DbPassword,
+  // host: config.DbHost,
+  // port: config.DbPort,
+  // database: config.Dbname,
+  // ssl: false,
 });
 
 //start the server to be listening 
@@ -67,9 +67,9 @@ app.post('/userById', async (req, res) => {
 app.post('/signUp', async (req, res) => {
   try {
     // console.dir('the body '+req.body);
-    console.log(`select * from users where logid='${req.body['logid']}';`);
+    console.log(`select id from users where logid='${req.body['logid']}';`);
     const con = await pool.connect();
-    const result = await con.query(`select * from users where logid='${req.body['logid']}';`);
+    const result = await con.query(`select id from users where logid='${req.body['logid']}';`);
     console.log(result["rows"]);
     let id;
     console.log(result.rowCount);
