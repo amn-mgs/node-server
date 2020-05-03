@@ -19,14 +19,14 @@ app.use(bodyParser.json());
 //configure the database Connection 
 var pool = new Pool({
   //  connectionString: config.connectionString,
-  // connectionString: process.env.DATABASE_URL,
-  // ssl: true,
-  user: config.DbUserName,
-  password: config.DbPassword,
-  host: config.DbHost,
-  port: config.DbPort,
-  database: config.Dbname,
-  ssl: false,
+  connectionString: process.env.DATABASE_URL,
+  ssl: true,
+  // user: config.DbUserName,
+  // password: config.DbPassword,
+  // host: config.DbHost,
+  // port: config.DbPort,
+  // database: config.Dbname,
+  // ssl: false,
 });
 
 //start the server to be listening 
