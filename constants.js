@@ -22,10 +22,3 @@ let ssl=false;
 
 
 module.exports = { DbHost, DbPort, Dbname, DbUserName, DbPassword ,ssl,connectionString};
-
-// // i was use it with mysql 
-// let DbHost = 'localhost';
-// let DbPort = '3000';
-// let Dbname = 'medical';
-// let DbUserName = 'ali';
-// let DbPassword = 'ali';

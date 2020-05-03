@@ -19,14 +19,14 @@ app.use(bodyParser.json());
 //configure the database Connection 
 var pool = new Pool({
   //  connectionString: config.connectionString,
-  connectionString: process.env.DATABASE_URL,
-  ssl: true,
-  // user: config.DbUserName,
-  // password: config.DbPassword,
-  // host: config.DbHost,
-  // port: config.DbPort,
-  // database: config.Dbname,
-  // ssl: false,
+  // connectionString: process.env.DATABASE_URL,
+  // ssl: true,
+  user: config.DbUserName,
+  password: config.DbPassword,
+  host: config.DbHost,
+  port: config.DbPort,
+  database: config.Dbname,
+  ssl: false,
 });
 
 //start the server to be listening 
@@ -63,11 +63,49 @@ app.post('/userById', async (req, res) => {
   }
 });
 
+
+app.post('/signUp', async (req, res) => {
+  try {
+    // console.dir('the body '+req.body);
+    console.log(`select * from users where logid='${req.body['logid']}';`);
+    const con = await pool.connect();
+    const result = await con.query(`select * from users where logid='${req.body['logid']}';`);
+    console.log(result["rows"]);
+    let id;
+    console.log(result.rowCount);
+    if (result.rowCount > 0) {
+
+      const resul = await con.query(`UPDATE users SET logid = '${req.body['logid']}', fullname = '${req.body['fullname']}', email = '${req.body['email']}', password = '${req.body['password']}', picurl = '${req.body['picurl']}' WHERE
+                                       id = ${result.rows[0]['id']} ;`);
+      id = result.rows[0]['id'];
+    }
+    else {
+
+      const resu = await con.query(`INSERT INTO users (
+        logid, fullname, email, password, picurl) VALUES ('${req.body['logid']}','${req.body['fullname']}','${req.body['email']}','${req.body['password']}','${req.body['picurl']}')
+         returning id;`);
+      // console.log(resu)
+      id = resu.rows[0]['id'];
+    }
+
+    console.log(`the id of the user is ${id}`);
+    const fresult = await con.query(`select * from users where id='${id}';`);
+    res.status(200).send(fresult["rows"][0]).json;
+
+    con.release();
+  } catch (error) {
+    console.error(error);
+    res.status(400).send("Amn Error" + error);
+  }
+});
+
+
 app.get('/', async (req, res) => {
   try {
     const con = await pool.connect();
     const result = await con.query('select * from users;');
-    console.log(result.rows).json;
+    console.log(result.rows);
+    console.log(result.rows.length);
     res.status(200).send(result.rows).json;
     con.release();
   } catch (error) {
