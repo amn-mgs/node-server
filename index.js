@@ -5,8 +5,10 @@ const { Pool } = require('pg');
 const socketio = require('socket.io');
 const bodyParser = require('body-parser');
 const config = require('./constants');
+
 //to check if the port is equipped or not write in cmd
 //cmd: netstat -ano | find ":3001" 
+
 port = process.env.PORT || 3000;
 const app = express();
 
@@ -19,14 +21,14 @@ app.use(bodyParser.json());
 //configure the database Connection 
 var pool = new Pool({
   //  connectionString: config.connectionString,
-  connectionString: process.env.DATABASE_URL,
-  ssl: true,
-  // user: config.DbUserName,
-  // password: config.DbPassword,
-  // host: config.DbHost,
-  // port: config.DbPort,
-  // database: config.Dbname,
-  // ssl: false,
+  // connectionString: process.env.DATABASE_URL,
+  // ssl: true,
+  user: config.DbUserName,
+  password: config.DbPassword,
+  host: config.DbHost,
+  port: config.DbPort,
+  database: config.Dbname,
+  ssl: false,
 });
 
 //start the server to be listening 
@@ -91,6 +93,58 @@ app.post('/signUp', async (req, res) => {
     console.log(`the id of the user is ${id}`);
     const fresult = await con.query(`select * from users where id='${id}';`);
     res.status(200).send(fresult["rows"][0]).json;
+
+    con.release();
+  } catch (error) {
+    console.error(error);
+    res.status(400).send("Amn Error" + error);
+  }
+});
+
+app.post('/register', async (req, res) => {
+
+  try {
+
+    console.log(`select id from users where upper(email)=upper('${req.body['email']}');`);
+    const con = await pool.connect();
+    const result = await con.query(`select id from users where upper(email)=upper('${req.body['email']}');`);
+    console.log(result["rows"]);
+    console.log(result.rowCount);
+    if (result.rowCount > 0) {
+      console.log('this email is already registered');
+      res.status(401).send('This email is already registered').json;
+    }
+    else {
+
+      const resu = await con.query(`INSERT INTO users (
+          logid, fullname, email, password, picurl) VALUES ('${req.body['logid']}','${req.body['fullname']}','${req.body['email']}','${req.body['password']}','${req.body['picurl']}')
+           returning id;`);
+
+      let id = resu.rows[0]['id'];
+      console.log(`the id of the user is ${id}`);
+      const fresult = await con.query(`select * from users where id='${id}';`);
+      res.status(200).send(fresult["rows"][0]).json;
+    }
+    con.release();
+  } catch (error) {
+    console.error(error);
+    res.status(400).send("Amn Error" + error);
+  }
+
+});
+
+app.post('/logIn', async (req, res) => {
+  try {
+    // console.dir('the body '+req.body);
+
+    console.log(`select * from users where email='${req.body['email']}' and password='${req.body['password']}' ;`);
+    const con = await pool.connect();
+    const result = await con.query(`select * from users where upper(email)=upper('${req.body['email']}') and password='${req.body['password']}' ;`);
+    console.log(result["rows"]);
+    if (result.rowCount > 0) { res.status(200).send(result.rows[0]).json; }
+    else {
+      res.status(400).send('Wrong UserName or password');
+    }
 
     con.release();
   } catch (error) {
